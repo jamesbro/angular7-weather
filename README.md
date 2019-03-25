@@ -1,5 +1,10 @@
 # Angular7Weather
 
+## Free Weather API
+Since Weather Underground no longer issues new free API keys, this example uses OpenWeatherMap, which does issue free API keys still.
+This API also allows us to directly get forecast by zipcode, where Weather Underground required an extra call to find the nearest station first.
+Obtain a free API key and add to environments/environment.local.ts file: https://openweathermap.org/api
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.6.
 
 ## Development server
