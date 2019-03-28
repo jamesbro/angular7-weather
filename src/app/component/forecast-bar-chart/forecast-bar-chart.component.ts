@@ -20,6 +20,7 @@ export class ForecastBarChartComponent implements OnInit {
   private yAxis: any;
   private yDomain: any = [-20, 120];
   private barWidth = 20;
+  private xAxisHeight = 100;
 
 
   constructor() {
@@ -54,17 +55,10 @@ export class ForecastBarChartComponent implements OnInit {
                     .range([0, this.width]);
     this.yScale = d3.scaleLinear()
                     .domain(this.yDomain)
-                    .range([this.height, 0]);
+                    .range([this.height - this.xAxisHeight, 0]);
     this.xAxis = svg.append('g')
                     .attr('class', 'axis axis-x')
-                    .attr('transform', `translate(${this.margin.left}, ${this.margin.top + this.height})`)
-                    .call(d3.axisBottom(this.xScale)
-                            .tickFormat(d3.timeFormat('%m-%d')))
-                    .selectAll('text')
-                    .style('text-anchor', 'end')
-                    .attr('dx', '-.8em')
-                    .attr('dy', '.15em')
-                    .attr('transform', 'rotate(-65)');
+                    .attr('transform', `translate(${this.margin.left}, ${this.margin.top + this.height - this.xAxisHeight})`);
     this.yAxis = svg.append('g')
                     .attr('class', 'axis axis-y')
                     .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`)
@@ -75,11 +69,20 @@ export class ForecastBarChartComponent implements OnInit {
     if (!this.chart || !this.forecast) {
       return;
     }
-    const forecastData = this.forecast.map(d => ({date: new Date(d.dt), temp: d.main.temp}));
-    this.xScale.domain(d3.extent(forecastData.map(d => d.date)));
+    const forecastData = this.forecast.map(d => ({
+      date: d3.utcParse('%Y-%m-%d %H:%M:%S')(d.dt_txt),
+      temp: d.main.temp
+    }));
+    this.xScale.domain(d3.extent(forecastData.map(d => d.date)))
+        .range([0, this.width - this.margin.right]);
     this.xAxis.transition()
         .call(d3.axisBottom(this.xScale)
-                .tickFormat(d3.timeFormat('%m-%d')));
+                .tickFormat(d3.timeFormat('%a %d %I:%M %p')))
+        .selectAll('text')
+        .style('text-anchor', 'end')
+        .attr('dx', '-.8em')
+        .attr('dy', '.15em')
+        .attr('transform', 'rotate(-65)');
     this.yAxis.transition()
         .call(d3.axisLeft(this.yScale));
     const update = this.chart.selectAll('.bar')
@@ -92,7 +95,7 @@ export class ForecastBarChartComponent implements OnInit {
         .transition()
         .attr('x', d => this.xScale(d.date))
         .attr('y', d => this.yScale(d.temp))
-        .attr('height', d => this.height - this.yScale(d.temp))
+        .attr('height', d => this.height - this.xAxisHeight - this.yScale(d.temp))
         .style('fill', d => this.colors(d.temp));
     update.enter()
           .append('rect')
@@ -105,7 +108,7 @@ export class ForecastBarChartComponent implements OnInit {
           .transition()
           .delay((d, i) => i * 4)
           .attr('y', d => this.yScale(d.temp))
-          .attr('height', d => this.height - this.yScale(d.temp));
+          .attr('height', d => this.height - this.xAxisHeight - this.yScale(d.temp));
   }
 
 }
