@@ -1,0 +1,13 @@
+<form (ngSubmit)="getForecast()"
+      [formGroup]="zipForm"
+      style="margin:20px;">
+  <label>Zipcode</label>
+  <input [(ngModel)]="zipcode"
+         formControlName="zipcode"
+         maxlength="5"
+         minlength="5"
+         required
+         type="text"/>
+  <button (click)="clear()">Clear</button>
+  <button [routerLink]="['/forecast',zipcode]">Go</button>
+</form>

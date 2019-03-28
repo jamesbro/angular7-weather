@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ForecastSegmentComponent } from './forecast-segment.component';
+import {ForecastSegmentComponent} from './forecast-segment.component';
 
 describe('ForecastSegmentComponent', () => {
   let component: ForecastSegmentComponent;
@@ -8,9 +8,9 @@ describe('ForecastSegmentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ForecastSegmentComponent ]
-    })
-    .compileComponents();
+             declarations: [ForecastSegmentComponent]
+           })
+           .compileComponents();
   }));
 
   beforeEach(() => {
@@ -20,6 +20,7 @@ describe('ForecastSegmentComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+        .toBeTruthy();
   });
 });

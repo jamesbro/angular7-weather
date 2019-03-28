@@ -1,0 +1,11 @@
+<div class="forecast">
+  <h1>Weather forecast for {{currentForecast ? currentForecast.city.name : 'loading...' }}</h1>
+  <a [routerLink]="['/']">Change Forecast Location</a>
+  <div *ngIf="currentForecast">
+    <!--    <forecast-segment [forecast]="forecast"-->
+    <!--                      *ngFor="let forecast of currentForecast.list"></forecast-segment>-->
+
+    <app-forecast-bar-chart [forecast]="currentForecast.list"></app-forecast-bar-chart>
+  </div>
+  <span *ngIf="!currentForecast">Forecast unavailable</span>
+</div>

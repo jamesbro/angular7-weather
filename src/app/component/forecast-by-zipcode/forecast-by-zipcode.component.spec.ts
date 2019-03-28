@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ForecastByZipcodeComponent } from './forecast-by-zipcode.component';
+import {ForecastByZipcodeComponent} from './forecast-by-zipcode.component';
 
 describe('ForecastByZipcodeComponent', () => {
   let component: ForecastByZipcodeComponent;
@@ -8,9 +8,9 @@ describe('ForecastByZipcodeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ForecastByZipcodeComponent ]
-    })
-    .compileComponents();
+             declarations: [ForecastByZipcodeComponent]
+           })
+           .compileComponents();
   }));
 
   beforeEach(() => {
@@ -20,6 +20,7 @@ describe('ForecastByZipcodeComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+        .toBeTruthy();
   });
 });
