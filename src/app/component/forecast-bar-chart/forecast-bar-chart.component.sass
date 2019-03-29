@@ -1,10 +1,27 @@
 .d3-chart
   width: 100%
   height: 480px
-  background: #e1ecf4
 
-  .axis path, .axis line
+  .axis
+    path, line
       stroke: #999
 
-  .axis text
-    fill: #999
+    text
+      fill: #999
+
+  .tooltip
+    position: absolute
+    width: 180px
+    height: 120px
+    background: #222
+    border-radius: 6px
+    color: #FFFFFF
+
+    .label
+      font-weight: bold
+
+    h3, h5
+        margin: 3px
+    img
+      margin: 0 auto
+      position: relative

@@ -1,33 +1,35 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import * as d3 from 'd3';
 
 @Component({
   selector: 'app-forecast-bar-chart',
   template: '<div class="d3-chart" #chart></div>',
-  styleUrls: ['./forecast-bar-chart.component.sass']
+  styleUrls: ['./forecast-bar-chart.component.sass'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ForecastBarChartComponent implements OnInit {
   @Input() forecast: any;
   @ViewChild('chart') private chartContainer: ElementRef;
-  private margin: any = {top: 20, bottom: 20, left: 50, right: 50};
+  private margin: any = {top: 20, bottom: 20, left: 100, right: 100};
   private chart: any;
   private width: number;
   private height: number;
   private xScale: any;
   private yScale: any;
   private icons: any;
+  private tooltip: any;
   private readonly colors: any;
   private xAxis: any;
   private yAxis: any;
   private yDomain: any = [-20, 120];
-  private barWidth = 20;
+  private barWidth = 28;
   private xAxisHeight = 100;
 
 
   constructor() {
     this.colors = d3.scaleLinear()
                     .domain(this.yDomain)
-                    .range(['#abf3ff', '#ff180c'] as any[]);
+                    .range(['#94fdff', '#ff5945'] as any[]);
     this.colors.domain(this.yDomain);
   }
 
@@ -67,6 +69,37 @@ export class ForecastBarChartComponent implements OnInit {
                     .attr('class', 'axis axis-y')
                     .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`)
                     .call(d3.axisLeft(this.yScale));
+
+    this.tooltip = d3.select(element)
+                     .append('div')
+                     .attr('class', 'tooltip')
+                     .style('opacity', 0)
+                     .style('height', 0);
+  }
+
+  handleMouseEnterFn(tooltip) {
+    return d => {
+      tooltip.interrupt()
+             .html(`<h5>${d3.timeFormat('%c')(d.date)}</h5>
+                          <img src="http://openweathermap.org/img/w/${d.icon}.png"/>
+                          <h3>${d.text}</h3>
+                          <span class="label">Temp: </span><span>${d.temp}&#730; F</span>`)
+             .style('left', `${d3.event.pageX < this.width ? d3.event.pageX + 10 : d3.event.pageX - 190}px`)
+             .style('top', `${d3.event.pageY + 16}px`)
+             .style('height', '180px')
+             .transition()
+             .duration(200)
+             .style('opacity', 0.9);
+    };
+  }
+
+  handleMouseLeaveFn(tooltip) {
+    return d => {
+      tooltip.transition()
+             .duration(300)
+             .style('opacity', 0)
+             .style('height', 0);
+    };
   }
 
   update() {
@@ -76,13 +109,17 @@ export class ForecastBarChartComponent implements OnInit {
     const forecastData = this.forecast.map(d => ({
       date: d3.utcParse('%Y-%m-%d %H:%M:%S')(d.dt_txt),
       temp: d.main.temp,
-      icon: d.weather[0].icon
+      icon: d.weather[0].icon,
+      text: d.weather[0].description
     }));
-    this.xScale.domain(d3.extent(forecastData.map(d => d.date)))
-        .range([0, this.width - this.margin.right]);
+
+    // set time scale to start now and go one period past the last time
+    this.xScale.domain(d3.extent([new Date(), d3.timeHour.offset(forecastData.slice(-1)[0].date, 3)]))
+        .range([0, this.width]);
     this.xAxis.transition()
         .call(d3.axisBottom(this.xScale)
-                .tickFormat(d3.timeFormat('%a %d %I:%M %p')))
+                .ticks(15)
+                .tickFormat(d3.timeFormat('%a %_d %_I %p')))
         .selectAll('text')
         .style('text-anchor', 'end')
         .attr('dx', '-.8em')
@@ -107,6 +144,8 @@ export class ForecastBarChartComponent implements OnInit {
         .attr('y', this.yScale(0))
         .attr('width', this.barWidth)
         .attr('height', 0)
+        .on('mouseover', this.handleMouseEnterFn(this.tooltip))
+        .on('mouseout', this.handleMouseLeaveFn(this.tooltip))
         .style('fill', d => this.colors(d.temp))
         .transition()
         .delay((d, i) => i * 4)
@@ -115,14 +154,14 @@ export class ForecastBarChartComponent implements OnInit {
 
     icons.enter()
          .append('image')
-         .attr('x', d => this.xScale(d.date) - 4)
+         .attr('x', d => this.xScale(d.date))
          .attr('y', this.yScale(0))
-         .attr('width', 28)
-         .attr('height', 28)
+         .attr('width', 30)
+         .attr('height', 30)
          .attr('href', d => `http://openweathermap.org/img/w/${d.icon}.png`)
          .transition()
          .delay((d, i) => i * 4)
-         .attr('y', d => this.yScale(d.temp) - 30);
+         .attr('y', d => this.yScale(d.temp));
 
   }
 

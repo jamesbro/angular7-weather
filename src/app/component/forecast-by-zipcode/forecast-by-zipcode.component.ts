@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-forecast-by-zipcode',
@@ -9,22 +9,18 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 export class ForecastByZipcodeComponent implements OnInit {
 
   zipForm: FormGroup;
-  zipcode = '';
+  zipcode: string;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor() {
   }
 
   ngOnInit() {
-    this.zipForm = this.formBuilder.group({
-      zipcode: ['', Validators.required]
+    this.zipForm = new FormGroup({
+      zipcode: new FormControl('', Validators.pattern(/\d{5}/))
     });
   }
 
-  getForecast() {
-// TODO: navigate
-  }
-
   clear() {
-    this.zipcode = '';
+    this.zipForm.reset();
   }
 }
