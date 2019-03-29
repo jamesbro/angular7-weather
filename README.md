@@ -1,5 +1,8 @@
 # Angular7Weather
 
+![alt text](./screenshot.png)
+
+
 ## Free Weather API
 Since Weather Underground no longer issues new free API keys, this example uses OpenWeatherMap, which does issue free API keys still.
 This API also allows us to directly get forecast by zipcode, where Weather Underground required an extra call to find the nearest station first.
