@@ -7,16 +7,15 @@ describe('ForecastComponent', () => {
   let component: ForecastComponent;
   let fixture: ComponentFixture<ForecastComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-             imports: [RouterTestingModule],
-             declarations: [
-               ForecastComponent,
-               MockComponent('app-forecast-bar-chart', {inputs: ['forecast']})
-             ]
-           })
-           .compileComponents();
-  }));
+  // TODO: mock forecast service
+  beforeEach(async(() => TestBed.configureTestingModule({
+                                  imports: [RouterTestingModule],
+                                  declarations: [
+                                    ForecastComponent,
+                                    MockComponent('app-forecast-bar-chart', {inputs: ['forecast']})
+                                  ]
+                                })
+                                .compileComponents()));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ForecastComponent);

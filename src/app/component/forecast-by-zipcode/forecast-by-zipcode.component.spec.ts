@@ -1,6 +1,6 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {RouterTestingModule} from '@angular/router/testing';
-
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ForecastByZipcodeComponent} from './forecast-by-zipcode.component';
 
 describe('ForecastByZipcodeComponent', () => {
@@ -9,8 +9,14 @@ describe('ForecastByZipcodeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-             imports: [RouterTestingModule],
-             declarations: [ForecastByZipcodeComponent]
+             imports: [
+               RouterTestingModule,
+               FormsModule,
+               ReactiveFormsModule
+             ],
+             declarations: [
+                 ForecastByZipcodeComponent
+             ]
            })
            .compileComponents();
   }));

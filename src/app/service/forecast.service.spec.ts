@@ -3,6 +3,7 @@ import {TestBed} from '@angular/core/testing';
 import {ForecastService} from './forecast.service';
 
 describe('ForecastService', () => {
+  // TODO: mock http
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
