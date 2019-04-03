@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  WEATHER_API_KEY: "Visit https://openweathermap.org/api for a free API key and create environments/environment.local.ts file"
+  WEATHER_API_KEY: 'Visit https://openweathermap.org/api for a free API key and create environments/environment.local.ts file'
 };
 
 /*

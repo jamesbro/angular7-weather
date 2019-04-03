@@ -7,7 +7,7 @@
          required
          type="text"/>
   <button (click)="clear()">Clear</button>
-  <button [routerLink]="['/forecast',zipForm.value.zipcode]"
-          [disabled]="zipForm.invalid">Go
+  <button [disabled]="zipForm.invalid"
+          [routerLink]="['/forecast',zipForm.value.zipcode]">Go
   </button>
 </form>
